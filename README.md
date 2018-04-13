@@ -1,4 +1,5 @@
-# Machine Learning Code Snippets
+# Machine Learning Code Snippets ![image title](https://img.shields.io/badge/work-in%20progress-blue.svg)
+
 
 The idea of these notebooks is to put together in one place a set of useful code snippets for model comparison.
 
