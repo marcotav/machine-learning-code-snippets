@@ -138,6 +138,17 @@ ax.set_ylabel("Cross-Validation Score", fontsize=8);
 plt.show()
 ```
 
+<br>
+<br>
+<p align="center">
+  <img src="plot_model_comp.png" 
+       width="600">
+</p>
+<br>
+
+
+
+
 Putting this into a function:
 ```
 def cross_val_comparison(models,X_train,X_test,y_train,y_test):
