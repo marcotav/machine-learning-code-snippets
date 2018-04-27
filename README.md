@@ -92,6 +92,16 @@ models_list = [LogisticRegression, GaussianNB, KNeighborsClassifier, LinearSVC]
 f1_score_comparison(models_list,X_train,X_test,y_train,y_test)
 ```
 
+<br>
+<br>
+<p align="center">
+  <img src="f1_score.png" 
+       width="250">
+</p>
+<br>
+
+
+
 We see that for the digits dataset and using the `f1_score` as metric, `KNeighborsClassifier` was the best classifier
 
 ### 1.3) Comparison using cross-validation
@@ -99,10 +109,11 @@ We see that for the digits dataset and using the `f1_score` as metric, `KNeighbo
 The cross-validation procedure is nicely illustrated below:
 
 <br>
-
-<img src="https://snag.gy/o1lLcw.jpg?convert_to_webp=true" width="600"a>
-
 <br>
+<p align="center">
+  <img src="cross_val_concept.png" 
+       width="250">
+</p>
 <br>
 
 ```
@@ -146,6 +157,22 @@ def cross_val_comparison(models,X_train,X_test,y_train,y_test):
 
     return df
 ```
+
+<br>
+
+<img src="https://snag.gy/o1lLcw.jpg?convert_to_webp=true" width="600"a>
+
+<br>
+<br>
+<p align="center">
+  <img src="cross_val_scores.png" 
+       width="250">
+</p>
+<br>
+
+
+
+
 
 We see that for the digits dataset and now using the cross-validation as metric, `KNeighborsClassifier` still is the best classifier.
 
