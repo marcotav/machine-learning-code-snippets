@@ -14,8 +14,8 @@
 
 
 <p align="center">
-  <a href="#cwa"> 1) Choosing which algorithm works best for a given dataset </a> •
-  <a href="#comb"> 2) Selecting the model input features trying all possible combinations </a>
+  <a href="#cwa"> (1) Choosing which algorithm works best for a given dataset </a> •
+  <a href="#comb"> (2) Selecting the model input features trying all possible combinations </a>
 </p>
 
 <a id = 'cwa'></a>
@@ -112,7 +112,7 @@ The cross-validation procedure is nicely illustrated below:
 <br>
 <p align="center">
   <img src="cross_val_concept.png" 
-       width="250">
+       width="500">
 </p>
 <br>
 
