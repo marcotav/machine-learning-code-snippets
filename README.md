@@ -169,9 +169,8 @@ def cross_val_comparison(models,X_train,X_test,y_train,y_test):
     return df
 ```
 
-<br>
 
-<img src="https://snag.gy/o1lLcw.jpg?convert_to_webp=true" width="600"a>
+
 
 <br>
 <br>
@@ -189,6 +188,44 @@ We see that for the digits dataset and now using the cross-validation as metric,
 
 
 <a id = 'comb'></a>
-## Selecting the model input features trying all possible combinations
+## 2) Selecting the model input features trying all possible combinations
 
+Using the dataset from [one of my other projects](https://github.com/marcotav/retail-store-expansion-analysis-with-lasso-and-ridge-regressions/blob/master/README.md) the following code generates all combinations of useful relevant features using the `itertools` module. The candidate features are:
+```
+features = ['num_stores','population', 'store_population_ratio', \
+ 'consumption_per_capita',  'stores_per_area', u'per_capita_income']
+```
+We now define the predictors and the target:
+```
+X,y = df[features], df['sale_dollars']
+```
+and perform a train-test split:
+```
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.3)
+```
+To generate combinations of features we use:
+```
+combs = []
+for num in range(1,len(features)+1):
+    combs.append([i[0] for i in list(itertools.combinations(features, num))])
+```
+The code below makes a list of `r2` combinations and finds the best predictors using `itemgetter`:
+```
+lr = linear_model.LinearRegression(normalize=True)
+ridge = linear_model.RidgeCV(cv=5)
+lasso = linear_model.LassoCV(cv=5)
+models = [lr,lasso,ridge]
+r2_comb_lst = []
+for comb in combs:        
+    for m in models:
+        model = m.fit(X_train[comb],y_train)
+        r2 = m.score(X_test[comb], y_test)
+        r2_comb_lst.append([round(r2,3),comb,str(model).split('(')[0]])
+        
+r2_comb_lst.sort(key=operator.itemgetter(1))
+```
+The best predictors were then obtained via:
+```
+r2_comb_lst[-1][1]
+```
 ## To be continued
