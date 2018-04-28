@@ -186,6 +186,26 @@ def cross_val_comparison(models,X_train,X_test,y_train,y_test):
 
 We see that for the digits dataset and now using the cross-validation as metric, `KNeighborsClassifier` still is the best classifier.
 
+We can write the former function with the same structure as the latter:
+
+```
+def f1_score_comparison(models,X_train,X_test,y_train,y_test):
+    
+    lst_f1 = []
+    
+    for model in models:
+        clf = model().fit(X_train, y_train)
+        y_pred = clf.predict(X_test)
+        f1 = metrics.f1_score(y_test, y_pred, average="macro")
+        lst_f1.append(f1)
+        model_names = [model.__name__ for model in models]
+        
+        df = pd.DataFrame(list(zip(model_names, lst_f1)))
+        df.columns = ['Model','f1']
+        df.set_index('Model', inplace=True)
+        
+    return df
+```
 
 <a id = 'comb'></a>
 ## 2) Selecting the model input features trying all possible combinations
