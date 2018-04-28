@@ -210,42 +210,66 @@ def f1_score_comparison(models,X_train,X_test,y_train,y_test):
 <a id = 'comb'></a>
 ## 2) Selecting the model input features trying all possible combinations
 
-Using the dataset from [one of my other projects](https://github.com/marcotav/retail-store-expansion-analysis-with-lasso-and-ridge-regressions/blob/master/README.md) the following code generates all combinations of useful relevant features using the `itertools` module. The candidate features are:
+Let us consider now another dataset, the Boston housing data. 
 ```
-features = ['num_stores','population', 'store_population_ratio', \
- 'consumption_per_capita',  'stores_per_area', u'per_capita_income']
+from sklearn.datasets import load_boston
+boston = load_boston()
+X = pd.DataFrame(boston.data, columns=boston.feature_names)
+y = boston.target
 ```
-We now define the predictors and the target:
+
+Now consider a list of predictors candidates. Their meaning is irrelevant for the goal here.
+
 ```
-X,y = df[features], df['sale_dollars']
+features = ['CRIM', 'RM', 'B', 'LSTAT']
 ```
-and perform a train-test split:
+The `X` is:
+```
+X = X[features]
+```
+Now after the split, 
 ```
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.3)
 ```
-To generate combinations of features we use:
+we will use:
+
+    itertools.combinations(features,n)
+    
+which is a list of combinations of the features in n-tuples e.g.
+```
+for n in range(1,5):
+    print('n =',n,'-->',list(itertools.combinations(features,n)))
+```
+the output is:
+```
+n = 1 --> [('CRIM',), ('RM',), ('B',), ('LSTAT',)]
+n = 2 --> [('CRIM', 'RM'), ('CRIM', 'B'), ('CRIM', 'LSTAT'), ('RM', 'B'), ('RM', 'LSTAT'), ('B', 'LSTAT')]
+n = 3 --> [('CRIM', 'RM', 'B'), ('CRIM', 'RM', 'LSTAT'), ('CRIM', 'B', 'LSTAT'), ('RM', 'B', 'LSTAT')]
+n = 4 --> [('CRIM', 'RM', 'B', 'LSTAT')]
+```
+We can convert the tuples into lists:
+
+```
+[list(i) for i in list(itertools.combinations(features, 2))]
+```
+Making a list of combinations:
 ```
 combs = []
 for num in range(1,len(features)+1):
-    combs.append([i[0] for i in list(itertools.combinations(features, num))])
-```
-The code below makes a list of `r2` combinations and finds the best predictors using `itemgetter`:
-```
-lr = linear_model.LinearRegression(normalize=True)
-ridge = linear_model.RidgeCV(cv=5)
-lasso = linear_model.LassoCV(cv=5)
-models = [lr,lasso,ridge]
-r2_comb_lst = []
-for comb in combs:        
-    for m in models:
-        model = m.fit(X_train[comb],y_train)
-        r2 = m.score(X_test[comb], y_test)
-        r2_comb_lst.append([round(r2,3),comb,str(model).split('(')[0]])
-        
-r2_comb_lst.sort(key=operator.itemgetter(1))
-```
-The best predictors were then obtained via:
-```
-r2_comb_lst[-1][1]
-```
+    lst = [list(i) for i in list(itertools.combinations(features, num))]
+    combs.append(lst)
+print('The element of combs are:\n')
+for i in range(len(combs)):
+    print(combs[i])
+ ```
+ The output is:
+ ```
+ The element of combs are:
+
+[['CRIM'], ['RM'], ['B'], ['LSTAT']]
+[['CRIM', 'RM'], ['CRIM', 'B'], ['CRIM', 'LSTAT'], ['RM', 'B'], ['RM', 'LSTAT'], ['B', 'LSTAT']]
+[['CRIM', 'RM', 'B'], ['CRIM', 'RM', 'LSTAT'], ['CRIM', 'B', 'LSTAT'], ['RM', 'B', 'LSTAT']]
+[['CRIM', 'RM', 'B', 'LSTAT']]
+ ```
+    
 ## To be continued
