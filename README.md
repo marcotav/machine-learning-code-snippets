@@ -14,12 +14,12 @@
 
 
 <p align="center">
-  <a href="#cwa"> (1) Choosing which algorithm works best for a given dataset </a> •
-  <a href="#comb"> (2) Selecting the model input features trying all possible combinations </a>
+  <a href="#cwa"> (1) Optimization of machine learning classification algorithms </a> •
+  <a href="#regr"> (2) Optimization of machine learning regression algorithms </a>
 </p>
 
 <a id = 'cwa'></a>
-## 1) Choosing which algorithm works best for a given dataset
+## 1) Optimization of machine learning classification algorithms
 
 For this item I will use the `digits` dataset, which is included in scikit-learn.
 
@@ -207,69 +207,10 @@ def f1_score_comparison(models,X_train,X_test,y_train,y_test):
     return df
 ```
 
-<a id = 'comb'></a>
-## 2) Selecting the model input features trying all possible combinations
+<a id = 'regr'></a>
+## 2) Optimization of machine learning regression algorithms
 
-Let us consider now another dataset, the Boston housing data. 
-```
-from sklearn.datasets import load_boston
-boston = load_boston()
-X = pd.DataFrame(boston.data, columns=boston.feature_names)
-y = boston.target
-```
 
-Now consider a list of predictors candidates. Their meaning is irrelevant for the goal here.
+### To be continued
 
-```
-features = ['CRIM', 'RM', 'B', 'LSTAT']
-```
-The `X` is:
-```
-X = X[features]
-```
-Now after the split, 
-```
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.3)
-```
-we will use:
 
-    itertools.combinations(features,n)
-    
-which is a list of combinations of the features in n-tuples e.g.
-```
-for n in range(1,5):
-    print('n =',n,'-->',list(itertools.combinations(features,n)))
-```
-the output is:
-```
-n = 1 --> [('CRIM',), ('RM',), ('B',), ('LSTAT',)]
-n = 2 --> [('CRIM', 'RM'), ('CRIM', 'B'), ('CRIM', 'LSTAT'), ('RM', 'B'), ('RM', 'LSTAT'), ('B', 'LSTAT')]
-n = 3 --> [('CRIM', 'RM', 'B'), ('CRIM', 'RM', 'LSTAT'), ('CRIM', 'B', 'LSTAT'), ('RM', 'B', 'LSTAT')]
-n = 4 --> [('CRIM', 'RM', 'B', 'LSTAT')]
-```
-We can convert the tuples into lists:
-
-```
-[list(i) for i in list(itertools.combinations(features, 2))]
-```
-Making a list of combinations:
-```
-combs = []
-for num in range(1,len(features)+1):
-    lst = [list(i) for i in list(itertools.combinations(features, num))]
-    combs.append(lst)
-print('The element of combs are:\n')
-for i in range(len(combs)):
-    print(combs[i])
- ```
- The output is:
- ```
- The element of combs are:
-
-[['CRIM'], ['RM'], ['B'], ['LSTAT']]
-[['CRIM', 'RM'], ['CRIM', 'B'], ['CRIM', 'LSTAT'], ['RM', 'B'], ['RM', 'LSTAT'], ['B', 'LSTAT']]
-[['CRIM', 'RM', 'B'], ['CRIM', 'RM', 'LSTAT'], ['CRIM', 'B', 'LSTAT'], ['RM', 'B', 'LSTAT']]
-[['CRIM', 'RM', 'B', 'LSTAT']]
- ```
-    
-## To be continued
