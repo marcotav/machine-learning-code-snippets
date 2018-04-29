@@ -15,7 +15,7 @@
 
 <p align="center">
   <a href="#cwa"> (1) Optimization of machine learning classification algorithms </a> •
-  <a href="#regr"> (2) Optimization of machine learning regression algorithms </a>
+  <a href="#comb"> (2) Selecting the model input features trying all possible combinations </a>
 </p>
 
 <a id = 'cwa'></a>
@@ -207,9 +207,53 @@ def f1_score_comparison(models,X_train,X_test,y_train,y_test):
     return df
 ```
 
-<a id = 'regr'></a>
-## 2) Optimization of machine learning regression algorithms
+<a id = 'comb'></a>
+## 2) Selecting the model input features trying all possible combinations
 
+Let us consider now another dataset, the Boston housing data. 
+
+```
+import pandas as pd
+import numpy as np
+from sklearn.datasets import load_boston
+from sklearn.model_selection import train_test_split
+boston = load_boston()
+X = pd.DataFrame(boston.data, columns=boston.feature_names)
+y = boston.target
+```
+The following function measure `r2` for all possible combinations of `features` and returns the best one:
+
+```
+def best_features(X,y,test_size,models,features):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size)
+    combs = []
+    for num in range(1,len(features)+1):
+        lst = [list(i) for i in list(itertools.combinations(features, num))]
+        combs.append(lst)
+    r2_comb_lst = []
+    best_comb = [0,[],' ']
+    for lst in combs:  
+        for m in models:
+            for comb in lst:
+                model = m().fit(X_train[comb],y_train)
+                predicted = model.predict(X_test[comb])
+                r2 = metrics.r2_score(y_test,predicted)**0.5
+                r2_comb_lst.append([r2,comb,m.__name__])
+                if r2 > best_comb[0]:
+                    best_comb = [round(r2,4),comb,m.__name__]
+    return 'Best combination is R2, features and model:',best_comb 
+```
+Calling the function as:
+```
+best_features(X,y,0.3,
+               [LinearRegression,RidgeCV,LassoCV],
+              ['CRIM', 'RM', 'B', 'LSTAT'])
+```
+we get:
+```
+('Best combination is R2, features and model:',
+ [0.7699, ['CRIM', 'RM', 'LSTAT'], 'LassoCV'])
+```
 
 ### To be continued
 
