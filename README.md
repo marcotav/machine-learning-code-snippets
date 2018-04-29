@@ -257,7 +257,7 @@ Calling the function as:
 ```
 best_features(X,y,0.3,
                [LinearRegression,RidgeCV,LassoCV],
-              ['CRIM', 'RM', 'B', 'LSTAT'])
+              X.columns.tolist())
 ```
 we get:
 ```
