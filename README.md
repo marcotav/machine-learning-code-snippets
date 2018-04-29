@@ -262,7 +262,9 @@ best_features(X,y,0.3,
 we get:
 ```
 ('Best combination is R2, features and model:',
- [0.7699, ['CRIM', 'RM', 'LSTAT'], 'LassoCV'])
+ [0.8478,
+  ['CRIM', 'ZN', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'PTRATIO', 'LSTAT'],
+  'LinearRegression'])
 ```
 
 ### To be continued
