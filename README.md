@@ -221,6 +221,16 @@ boston = load_boston()
 X = pd.DataFrame(boston.data, columns=boston.feature_names)
 y = boston.target
 ```
+
+<br>
+<br>
+<p align="center">
+  <img src="dfboston.png" 
+       width="600">
+</p>
+<br>
+
+
 The following function measure `r2` for all possible combinations of `features` and returns the best one:
 
 ```
